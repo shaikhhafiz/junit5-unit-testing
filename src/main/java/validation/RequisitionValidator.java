@@ -8,5 +8,8 @@ public class RequisitionValidator {
     if(requisition.getRefNo() == null){
       throw new RuntimeException("Ref no can't be null");
     }
+    if(requisition.getReqDate() == null) {
+      throw new RuntimeException("Req date can't be null");
+    }
   }
 }

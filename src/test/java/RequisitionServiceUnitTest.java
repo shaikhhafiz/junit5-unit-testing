@@ -35,6 +35,16 @@ public class RequisitionServiceUnitTest {
     }
 
     @Test
+    void getRequisitionByIdReturnSingleRequisition() {
+        Requisition requisition = new Requisition();
+        int id = 0;
+        requisition.setId(id);
+        when(dao.getById(id)).thenReturn(requisition);
+        Requisition response = service.getById(id);
+        Assertions.assertEquals(id, response.getId());
+    }
+
+    @Test
     public void createRequisitionTestReturnsData() {
         Requisition model = this.buildRequisition();
         when(dao.create(model)).thenReturn(model);
@@ -52,6 +62,21 @@ public class RequisitionServiceUnitTest {
         //Act
         Exception exception = Assertions.assertThrows(RuntimeException.class, () -> {service.create(model);});
         String expectedMessage = "Ref no can't be null";
+
+        //Assert
+        Assertions.assertTrue(exception.getMessage().contains(expectedMessage));
+    }
+
+    @Test
+    void createRequisitionWithNullDateThrowsException() {
+        //Arrange
+        Requisition model = this.buildRequisition();
+        model.setReqDate(null);
+        when(dao.create(model)).thenReturn(model);
+
+        //Act
+        Exception exception = Assertions.assertThrows(RuntimeException.class, () -> {service.create(model);});
+        String expectedMessage = "Req date can't be null";
 
         //Assert
         Assertions.assertTrue(exception.getMessage().contains(expectedMessage));
